@@ -6,7 +6,7 @@ const names = {
   scenario_sensitivity: 'Compare price, message and channel', regularization_nested_cv: 'Reduce overfitting',
   frequency_baseline: 'Compare with average choice rates', shared_utility_comparison: 'Try a simpler model',
   final_offer_sensitivity: 'Check the proposed offer and costs', bounded_research_loop: 'Run automatic research',
-  research_loop_trial: 'Automatic research trial'
+  research_loop_trial: 'Automatic research trial', model_tournament: 'Compare model families', model_tournament_trial: 'Model tournament trial'
 };
 function text(parent, tag, content, className) {
   const e = document.createElement(tag); e.textContent = content; if (className) e.className = className; parent.append(e); return e;
@@ -57,6 +57,7 @@ function renderOffer(result, target) {
   target.replaceChildren(); target.hidden = false;
   const p = result.population_estimate;
   text(target, 'h3', 'Result');
+  probabilityChart(target, result.probabilities);
   const summary = document.createElement('table');
   for (const [label, value] of [
     ['Entrant purchase probability · 200 profiles', (p.mean_entrant_probability * 100).toFixed(1) + '%'],
@@ -94,6 +95,7 @@ function describe(run) {
   if (run.status === 'failed') return 'Failed — retained';
   if (run.status !== 'completed') return run.status;
   const output = run.outputs || run.summary || {};
+  if (run.kind === 'model_tournament') return 'Finished; prototype unchanged';
   if (run.kind === 'bounded_research_loop') return output.decision === 'keep_existing_model' ? 'Stopped; kept the existing model' : 'Candidate ready for review';
   return {history_comparison: 'No clear benefit from history', frozen_check: 'Starter still competitive',
     scenario_sensitivity: 'An offer candidate, not proof', regularization_nested_cv: 'Smaller effects helped',
@@ -108,7 +110,7 @@ async function refreshRuns() {
     const response = await fetch('runs.json'); if (!response.ok) throw Error('Could not load experiments'); runs = await response.json(); serverAvailable = false;
   }
   const list = $('run-list'); list.replaceChildren();
-  for (const run of runs.filter(r => r.kind !== 'research_loop_trial')) {
+  for (const run of runs.filter(r => !['research_loop_trial', 'model_tournament_trial'].includes(r.kind))) {
     const row = document.createElement('tr'), id = document.createElement('td'), button = document.createElement('button');
     button.type = 'button'; button.className = 'link'; button.textContent = '#' + run.id; button.onclick = () => inspectRun(run.id); id.append(button); row.append(id);
     text(row, 'td', names[run.kind] || run.kind); text(row, 'td', describe(run)); list.append(row);
@@ -120,6 +122,7 @@ async function refreshRuns() {
   }
   $('database-download').href = serverAvailable ? 'api/database' : 'runs.sqlite';
   $('research-button').disabled = !serverAvailable;
+  document.querySelector('#experiment-type option[value="research"]').hidden = !serverAvailable;
   if (!serverAvailable) $('research-status').textContent = 'Run locally with python3 app.py to enable this. CLI: python3 research_loop.py';
   return runs;
 }
@@ -128,10 +131,20 @@ async function inspectRun(id) {
   try {
     let run;
     if (serverAvailable) {const response = await fetch('api/runs/' + id); if (!response.ok) throw Error('Run not found'); run = await response.json();}
-    else run = runs.find(r => r.id === Number(id));
+    else {
+      const indexed = runs.find(r => r.id === Number(id));
+      if (!indexed) throw Error('Run not found');
+      const response = await fetch('runs/' + Number(id) + '.json');
+      if (!response.ok) throw Error('Could not load this saved run');
+      run = await response.json();
+    }
     if (!run) throw Error('Run not found');
     text(target, 'h3', 'Run #' + run.id + ' · ' + (names[run.kind] || run.kind));
     text(target, 'p', describe(run)); text(target, 'p', 'Expected: ' + run.expectation);
+    if (run.kind === 'model_tournament' && run.outputs?.metrics) {
+      text(target, 'p', 'Best observed family: ' + run.outputs.best_observed_family + '. The submission model is unchanged.');
+      text(target, 'p', run.outputs.limits, 'muted');
+    }
     if (run.outputs?.loop_minus_incumbent) {
       text(target, 'p', 'Prediction loss: ' + run.outputs.metrics.log_loss.toFixed(4) + '. Trial IDs: ' + run.outputs.trial_ids.join(', ') + '.');
       text(target, 'p', 'The loop does not change the final model automatically. Reused build data cannot prove a new real-world winner.', 'muted');
@@ -148,6 +161,42 @@ function inspectBrowserRun(run) {
 }
 $('lookup-form').onsubmit = event => {event.preventDefault(); inspectRun(Number($('lookup-id').value));};
 $('export-browser').onclick = async () => exportJSON(await browserRuns(), 'my-offer-runs.json');
+let graphData;
+function probabilityChart(target, probabilities) {
+  const chart = document.createElement('div'); chart.className = 'probability-chart';
+  chart.setAttribute('aria-label', 'Household choice probabilities, on a zero to 100 percent scale');
+  for (const [choice, probability] of Object.entries(probabilities).sort((a,b) => b[1]-a[1])) {
+    const row = document.createElement('div'); row.className = 'plot-row' + (choice === 'entrant' ? ' selected' : '');
+    text(row, 'span', choice === 'none' ? 'Buy nothing' : choice[0].toUpperCase()+choice.slice(1), 'plot-label');
+    const track = document.createElement('div'); track.className = 'probability-track'; track.setAttribute('aria-hidden', 'true');
+    const bar = document.createElement('div'); bar.className = 'probability-fill'; bar.style.width = (probability*100)+'%'; track.append(bar); row.append(track);
+    text(row, 'span', (probability*100).toFixed(1)+'%', 'plot-value'); chart.append(row);
+  }
+  target.append(chart);
+}
+function renderScores() {
+  if (!graphData) return;
+  const view = $('score-view').value, data = graphData[view];
+  const target = $('score-chart'); target.replaceChildren();
+  if (!data?.rows?.length) {text(target, 'p', 'Tournament results are not available yet.'); return;}
+  const low = Math.floor((Math.min(...data.rows.map(r=>r.loss)) - 0.005)*100)/100;
+  const high = Math.ceil((Math.max(...data.rows.map(r=>r.loss)) + 0.005)*100)/100;
+  for (const item of data.rows) {
+    const row = document.createElement('div'); row.className = 'plot-row' + (item.selected ? ' selected' : '');
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'link plot-label'; button.textContent = item.label;
+    button.onclick = () => inspectRun(item.run_id); row.append(button);
+    const track = document.createElement('div'); track.className = 'plot-track'; track.setAttribute('aria-hidden', 'true');
+    const dot = document.createElement('span'); dot.className = 'plot-dot'; dot.style.left = ((item.loss-low)/(high-low)*100)+'%'; track.append(dot); row.append(track);
+    text(row, 'span', item.loss.toFixed(4), 'plot-value'); target.append(row);
+  }
+  const axis = document.createElement('div'); axis.className = 'plot-axis';
+  text(axis, 'span', low.toFixed(2)); text(axis, 'span', ((low+high)/2).toFixed(2)); text(axis, 'span', high.toFixed(2)); target.append(axis);
+  $('score-caption').textContent = data.caption + ' Zoomed axis; small differences may be uncertain.';
+}
+$('score-view').onchange = renderScores;
+async function loadGraphs() {
+  try {const response = await fetch('graphs.json'); if (!response.ok) return; graphData = await response.json(); $('comparison').hidden = false; renderScores();} catch {}
+}
 let pollTimer;
 async function pollResearch() {
   try {
@@ -174,6 +223,6 @@ document.querySelector('[data-view="runs"]').addEventListener('click', () => {re
     const response = await fetch('model.json'); if (!response.ok) throw Error('Could not load model'); bundle = await response.json();
     db = await new Promise((resolve, reject) => {const q = indexedDB.open('cleaner-choice-experiments', 1); q.onupgradeneeded = () => q.result.createObjectStore('runs', {keyPath: 'id'}); q.onsuccess = () => resolve(q.result); q.onerror = () => reject(q.error);});
     $('predict-button').disabled = false; $('offer-status').textContent = 'Ready';
-    await refreshRuns(); if (serverAvailable) await pollResearch();
+    await refreshRuns(); await loadGraphs(); if (serverAvailable) await pollResearch();
   } catch (error) {$('offer-status').textContent = error.message + '. Refresh to try again.'; $('offer-status').className = 'error';}
 })();

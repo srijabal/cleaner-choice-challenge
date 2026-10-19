@@ -43,3 +43,5 @@ It tests predefined changes and saves expectations before running them. Run 9 ke
 I would run one randomized online US shopper study comparing $3.49 versus $4.49 and cleaning versus a substantiated environmental message. Keep the formula, 16 fl oz bottle and competing offers constant. Include buying nothing, measure actual purchases and follow repeat purchases.
 
 Get real costs first, then use a pilot to set the sample size and a worthwhile contribution-profit difference before the main study. Change the price if the discount does not pay for itself, or the message if cleaning performs better. Weak repeat purchase would also make me doubt the candidate. Online is a convenient test venue; superiority over retail remains untested.
+
+One last comparison after preparing the submission: in run 41 I tried 17 model settings, including random forest and boosted trees, but the inner search chose the current-only utility model in all 5 outer folds (log loss 1.5694); this supports keeping it among the models I tried, although the reused data does not prove it is the best possible model.
