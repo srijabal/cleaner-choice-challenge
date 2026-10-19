@@ -1,0 +1,1335 @@
+{
+  "run_id": 127,
+  "overview": {
+    "utility_current": {
+      "log_loss": {
+        "mean": 1.5691439213161715,
+        "range": [
+          1.5666028435985004,
+          1.5720657327490366
+        ]
+      },
+      "buy_log_loss": {
+        "mean": 0.4591328156790442,
+        "range": [
+          0.45858735895498776,
+          0.4604539479020331
+        ]
+      },
+      "accuracy": {
+        "mean": 0.30433333333333334,
+        "range": [
+          0.2916666666666667,
+          0.31416666666666665
+        ]
+      }
+    },
+    "utility_history": {
+      "log_loss": {
+        "mean": 1.5702571767016693,
+        "range": [
+          1.5689919097452145,
+          1.5731068205917365
+        ]
+      },
+      "buy_log_loss": {
+        "mean": 0.45979398824049544,
+        "range": [
+          0.4587323933022831,
+          0.46067907211066245
+        ]
+      },
+      "accuracy": {
+        "mean": 0.3045,
+        "range": [
+          0.2891666666666667,
+          0.3125
+        ]
+      }
+    },
+    "logistic_current": {
+      "log_loss": {
+        "mean": 1.5735349305897104,
+        "range": [
+          1.5710004071941908,
+          1.5758910896979388
+        ]
+      },
+      "buy_log_loss": {
+        "mean": 0.4571688730694234,
+        "range": [
+          0.4564787430976827,
+          0.4577373171469511
+        ]
+      },
+      "accuracy": {
+        "mean": 0.29416666666666663,
+        "range": [
+          0.28583333333333333,
+          0.30416666666666664
+        ]
+      }
+    },
+    "frequency": {
+      "log_loss": {
+        "mean": 1.5989179413887922,
+        "range": [
+          1.5973856385777094,
+          1.600574144391495
+        ]
+      },
+      "buy_log_loss": {
+        "mean": 0.4581331820242873,
+        "range": [
+          0.4573694840350648,
+          0.45889836912151716
+        ]
+      },
+      "accuracy": {
+        "mean": 0.2525,
+        "range": [
+          0.2525,
+          0.2525
+        ]
+      }
+    }
+  },
+  "comparisons": {
+    "utility_history_minus_utility_current": {
+      "loss": {
+        "mean": 0.0011132553854976707,
+        "ci95": [
+          -0.0007173624992373264,
+          0.0028971681475498602
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      },
+      "buy_loss": {
+        "mean": 0.0006611725614512566,
+        "ci95": [
+          0.00015705752586140403,
+          0.0011816480229080264
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      }
+    },
+    "logistic_current_minus_utility_current": {
+      "loss": {
+        "mean": 0.00439100927353905,
+        "ci95": [
+          -0.005679412237822755,
+          0.014762567753262998
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      },
+      "buy_loss": {
+        "mean": -0.0019639426096207876,
+        "ci95": [
+          -0.006864757776029345,
+          0.0033652293277006487
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      }
+    },
+    "frequency_minus_utility_current": {
+      "loss": {
+        "mean": 0.029774020072620627,
+        "ci95": [
+          0.014667899195541189,
+          0.04483640602802853
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      },
+      "buy_loss": {
+        "mean": -0.0009996336547568872,
+        "ci95": [
+          -0.005346317616727437,
+          0.0036741006956836487
+        ],
+        "households": 200,
+        "interpretation": "negative favors first model; descriptive bootstrap with fitted predictions held fixed"
+      }
+    }
+  },
+  "trial_ids": [
+    128,
+    129,
+    130,
+    131,
+    132
+  ],
+  "per_seed": [
+    {
+      "seed": 101,
+      "metrics": {
+        "utility_current": {
+          "n": 1200,
+          "log_loss": 1.5666028435985004,
+          "buy_log_loss": 0.4589153595773349,
+          "brand_log_loss_given_purchase": 1.3359045033421093,
+          "brier": 0.7810422814596015,
+          "accuracy": 0.31416666666666665,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21133173423479049,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 33,
+              "predicted": 0.09351259140556223,
+              "observed": 0.06060606060606061
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 541,
+              "predicted": 0.1563350131921006,
+              "observed": 0.16266173752310537
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 485,
+              "predicted": 0.24653470059590565,
+              "observed": 0.24123711340206186
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 141,
+              "predicted": 0.3288339974427258,
+              "observed": 0.3262411347517731
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "utility_history": {
+          "n": 1200,
+          "log_loss": 1.5690579681555081,
+          "buy_log_loss": 0.459850245044852,
+          "brand_log_loss_given_purchase": 1.3377379575203894,
+          "brier": 0.7822054803004371,
+          "accuracy": 0.30916666666666665,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21120729547424988,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 31,
+              "predicted": 0.09232515827511746,
+              "observed": 0.06451612903225806
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 549,
+              "predicted": 0.15605343797619747,
+              "observed": 0.1621129326047359
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 474,
+              "predicted": 0.24638386054804187,
+              "observed": 0.24261603375527427
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 146,
+              "predicted": 0.3296396391360749,
+              "observed": 0.3219178082191781
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "logistic_current": {
+          "n": 1200,
+          "log_loss": 1.5720580785647045,
+          "buy_log_loss": 0.4577373171469511,
+          "brand_log_loss_given_purchase": 1.3439044358807075,
+          "brier": 0.7834952703372116,
+          "accuracy": 0.30416666666666664,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21084645157948056,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 531,
+              "predicted": 0.16981247066128566,
+              "observed": 0.15254237288135594
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 645,
+              "predicted": 0.24107570436014644,
+              "observed": 0.25736434108527134
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 24,
+              "predicted": 0.30631211091414845,
+              "observed": 0.25
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "frequency": {
+          "n": 1200,
+          "log_loss": 1.5973856385777094,
+          "buy_log_loss": 0.4582273994611312,
+          "brand_log_loss_given_purchase": 1.3738591828541649,
+          "brier": 0.7952096969046148,
+          "accuracy": 0.2525,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21077720207253886,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 1200,
+              "predicted": 0.21077720207253886,
+              "observed": 0.21083333333333334
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "seed": 202,
+      "metrics": {
+        "utility_current": {
+          "n": 1200,
+          "log_loss": 1.5720657327490366,
+          "buy_log_loss": 0.4604539479020331,
+          "brand_log_loss_given_purchase": 1.3406373284586977,
+          "brier": 0.7837724597667831,
+          "accuracy": 0.2916666666666667,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.2108166889641794,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 24,
+              "predicted": 0.08884512206376093,
+              "observed": 0.0
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 552,
+              "predicted": 0.15490582077917672,
+              "observed": 0.16304347826086957
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 477,
+              "predicted": 0.24549357509230788,
+              "observed": 0.25366876310272535
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 147,
+              "predicted": 0.32815847236971857,
+              "observed": 0.2857142857142857
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "utility_history": {
+          "n": 1200,
+          "log_loss": 1.5731068205917365,
+          "buy_log_loss": 0.46067907211066245,
+          "brand_log_loss_given_purchase": 1.3416214052033053,
+          "brier": 0.7843672122974306,
+          "accuracy": 0.2891666666666667,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21067347675854112,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 24,
+              "predicted": 0.08848296774106677,
+              "observed": 0.041666666666666664
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 559,
+              "predicted": 0.15525754987700294,
+              "observed": 0.16457960644007155
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 479,
+              "predicted": 0.24681114832896087,
+              "observed": 0.24425887265135698
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 138,
+              "predicted": 0.3309642786496147,
+              "observed": 0.3115942028985507
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "logistic_current": {
+          "n": 1200,
+          "log_loss": 1.5758910896979388,
+          "buy_log_loss": 0.45753979732178846,
+          "brand_log_loss_given_purchase": 1.3487653777400808,
+          "brier": 0.7853220924097365,
+          "accuracy": 0.28583333333333333,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21021356311736616,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 528,
+              "predicted": 0.1695680064701976,
+              "observed": 0.15151515151515152
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 644,
+              "predicted": 0.2391006126072033,
+              "observed": 0.2562111801242236
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 28,
+              "predicted": 0.3122704930548625,
+              "observed": 0.2857142857142857
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "frequency": {
+          "n": 1200,
+          "log_loss": 1.60000401830156,
+          "buy_log_loss": 0.45889836912151716,
+          "brand_log_loss_given_purchase": 1.3762078181065844,
+          "brier": 0.7962117103814867,
+          "accuracy": 0.2525,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.2107772020725389,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 240,
+              "predicted": 0.19792746113989637,
+              "observed": 0.2625
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 960,
+              "predicted": 0.2139896373056995,
+              "observed": 0.19791666666666666
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "seed": 303,
+      "metrics": {
+        "utility_current": {
+          "n": 1200,
+          "log_loss": 1.5708633309026985,
+          "buy_log_loss": 0.45858735895498776,
+          "brand_log_loss_given_purchase": 1.3414383581278921,
+          "brier": 0.7831928260267049,
+          "accuracy": 0.3075,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21063619166973774,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 18,
+              "predicted": 0.08886800153728355,
+              "observed": 0.0
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 560,
+              "predicted": 0.15590362618073558,
+              "observed": 0.16428571428571428
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 489,
+              "predicted": 0.2458809900672043,
+              "observed": 0.23721881390593047
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 133,
+              "predicted": 0.32798474565367947,
+              "observed": 0.3383458646616541
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "utility_history": {
+          "n": 1200,
+          "log_loss": 1.5707930285398675,
+          "buy_log_loss": 0.4587323933022831,
+          "brand_log_loss_given_purchase": 1.3411786555629157,
+          "brier": 0.7831870065729055,
+          "accuracy": 0.305,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21062596153710605,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 25,
+              "predicted": 0.09109935117072504,
+              "observed": 0.04
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 553,
+              "predicted": 0.15640377135646738,
+              "observed": 0.16455696202531644
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 482,
+              "predicted": 0.24505593217419921,
+              "observed": 0.23858921161825727
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 140,
+              "predicted": 0.32761017997977604,
+              "observed": 0.32857142857142857
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "logistic_current": {
+          "n": 1200,
+          "log_loss": 1.5743026798980688,
+          "buy_log_loss": 0.4564787430976827,
+          "brand_log_loss_given_purchase": 1.348129371015541,
+          "brier": 0.7847763741745836,
+          "accuracy": 0.2941666666666667,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21105343042295988,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 521,
+              "predicted": 0.1706859979682143,
+              "observed": 0.15355086372360843
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 659,
+              "predicted": 0.23996542139769458,
+              "observed": 0.2549317147192716
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 20,
+              "predicted": 0.30997494325157454,
+              "observed": 0.25
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "frequency": {
+          "n": 1200,
+          "log_loss": 1.600574144391495,
+          "buy_log_loss": 0.45818337202092363,
+          "brand_log_loss_given_purchase": 1.3777577154217944,
+          "brier": 0.7967166008930888,
+          "accuracy": 0.2525,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.2107772020725389,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 240,
+              "predicted": 0.1989637305699482,
+              "observed": 0.25833333333333336
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 960,
+              "predicted": 0.2137305699481865,
+              "observed": 0.19895833333333332
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "seed": 404,
+      "metrics": {
+        "utility_current": {
+          "n": 1200,
+          "log_loss": 1.5685313696586232,
+          "buy_log_loss": 0.45873982067166946,
+          "brand_log_loss_given_purchase": 1.3384420691299943,
+          "brier": 0.7823258375341126,
+          "accuracy": 0.30583333333333335,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21115722066098488,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 25,
+              "predicted": 0.09126149871390755,
+              "observed": 0.04
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 547,
+              "predicted": 0.1557474973157885,
+              "observed": 0.16087751371115175
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 498,
+              "predicted": 0.24661662121625139,
+              "observed": 0.2429718875502008
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 130,
+              "predicted": 0.33152437636849763,
+              "observed": 0.33076923076923076
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "utility_history": {
+          "n": 1200,
+          "log_loss": 1.5693361564760193,
+          "buy_log_loss": 0.45972598848644747,
+          "brand_log_loss_given_purchase": 1.3382233181783783,
+          "brier": 0.782679446440319,
+          "accuracy": 0.3125,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.211146331427402,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 23,
+              "predicted": 0.09027258853387672,
+              "observed": 0.043478260869565216
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 545,
+              "predicted": 0.1547177256958225,
+              "observed": 0.15412844036697249
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 491,
+              "predicted": 0.24530919433078532,
+              "observed": 0.24439918533604887
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 141,
+              "predicted": 0.330009597560031,
+              "observed": 0.3404255319148936
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "logistic_current": {
+          "n": 1200,
+          "log_loss": 1.5744223975936493,
+          "buy_log_loss": 0.4573169593317683,
+          "brand_log_loss_given_purchase": 1.3472628401148314,
+          "brier": 0.7847057130672009,
+          "accuracy": 0.2875,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.20965596150256519,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 532,
+              "predicted": 0.16945151020919264,
+              "observed": 0.15977443609022557
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 647,
+              "predicted": 0.23952957886515666,
+              "observed": 0.24420401854714066
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 21,
+              "predicted": 0.3077768021919715,
+              "observed": 0.47619047619047616
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "frequency": {
+          "n": 1200,
+          "log_loss": 1.5987227838597895,
+          "buy_log_loss": 0.4573694840350648,
+          "brand_log_loss_given_purchase": 1.3765064922509243,
+          "brier": 0.7960136379500121,
+          "accuracy": 0.2525,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21077720207253886,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 1200,
+              "predicted": 0.21077720207253886,
+              "observed": 0.21083333333333334
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "seed": 505,
+      "metrics": {
+        "utility_current": {
+          "n": 1200,
+          "log_loss": 1.567656329671999,
+          "buy_log_loss": 0.4589675912891957,
+          "brand_log_loss_given_purchase": 1.337112046290818,
+          "brier": 0.781537841045087,
+          "accuracy": 0.3025,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21086655321485942,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 42,
+              "predicted": 0.09321035757796563,
+              "observed": 0.11904761904761904
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 534,
+              "predicted": 0.15777946346005123,
+              "observed": 0.16853932584269662
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 488,
+              "predicted": 0.2459603898624967,
+              "observed": 0.2336065573770492
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 136,
+              "predicted": 0.3297215080808164,
+              "observed": 0.3235294117647059
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "utility_history": {
+          "n": 1200,
+          "log_loss": 1.5689919097452145,
+          "buy_log_loss": 0.45998224225823225,
+          "brand_log_loss_given_purchase": 1.3374990964667122,
+          "brier": 0.7821572974987002,
+          "accuracy": 0.30666666666666664,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21073453064739697,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 36,
+              "predicted": 0.09169888341644998,
+              "observed": 0.1111111111111111
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 527,
+              "predicted": 0.1557078877072017,
+              "observed": 0.17267552182163187
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 497,
+              "predicted": 0.24428383541135285,
+              "observed": 0.22132796780684105
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 140,
+              "predicted": 0.32937967109104654,
+              "observed": 0.34285714285714286
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "logistic_current": {
+          "n": 1200,
+          "log_loss": 1.5710004071941908,
+          "buy_log_loss": 0.4567715484489263,
+          "brand_log_loss_given_purchase": 1.3437935984867513,
+          "brier": 0.7830594119573152,
+          "accuracy": 0.2991666666666667,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21082182085312545,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 510,
+              "predicted": 0.16863178866682713,
+              "observed": 0.15294117647058825
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 667,
+              "predicted": 0.2395582840489433,
+              "observed": 0.24437781109445278
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 23,
+              "predicted": 0.31298249317493704,
+              "observed": 0.5217391304347826
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        },
+        "frequency": {
+          "n": 1200,
+          "log_loss": 1.5979031218134065,
+          "buy_log_loss": 0.45798728548279966,
+          "brand_log_loss_given_purchase": 1.3747728679364104,
+          "brier": 0.7954737934799144,
+          "accuracy": 0.2525,
+          "entrant_observed": 0.21083333333333334,
+          "entrant_predicted": 0.21077720207253886,
+          "entrant_calibration": [
+            {
+              "range": [
+                0,
+                0.1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.1,
+                0.2
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.2,
+                0.3
+              ],
+              "n": 1200,
+              "predicted": 0.21077720207253886,
+              "observed": 0.21083333333333334
+            },
+            {
+              "range": [
+                0.3,
+                0.5
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            },
+            {
+              "range": [
+                0.5,
+                1
+              ],
+              "n": 0,
+              "predicted": null,
+              "observed": null
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "submitted_model_changed": false,
+  "limits": "Same 200 build households, repeatedly partitioned. Ranges are not confidence intervals. Household bootstrap intervals average repeat losses with predictions fixed; they omit adaptive research and full training uncertainty. No check outcomes or fresh households were used."
+}

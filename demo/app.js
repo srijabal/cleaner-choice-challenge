@@ -6,7 +6,8 @@ const names = {
   scenario_sensitivity: 'Compare price, message and channel', regularization_nested_cv: 'Reduce overfitting',
   frequency_baseline: 'Compare with average choice rates', shared_utility_comparison: 'Try a simpler model',
   final_offer_sensitivity: 'Check the proposed offer and costs', bounded_research_loop: 'Run automatic research',
-  research_loop_trial: 'Automatic research trial', model_tournament: 'Compare model families', model_tournament_trial: 'Model tournament trial'
+  research_loop_trial: 'Automatic research trial', model_tournament: 'Compare model families', model_tournament_trial: 'Model tournament trial',
+  split_robustness: 'Check different household splits · follow-up', split_robustness_trial: 'Household split check'
 };
 function text(parent, tag, content, className) {
   const e = document.createElement(tag); e.textContent = content; if (className) e.className = className; parent.append(e); return e;
@@ -95,6 +96,7 @@ function describe(run) {
   if (run.status === 'failed') return 'Failed — retained';
   if (run.status !== 'completed') return run.status;
   const output = run.outputs || run.summary || {};
+  if (run.kind === 'split_robustness') return 'Checked 5 splits; submitted model unchanged';
   if (run.kind === 'model_tournament') return 'Finished; prototype unchanged';
   if (run.kind === 'bounded_research_loop') return output.decision === 'keep_existing_model' ? 'Stopped; kept the existing model' : 'Candidate ready for review';
   return {history_comparison: 'No clear benefit from history', frozen_check: 'Starter still competitive',
@@ -110,7 +112,7 @@ async function refreshRuns() {
     const response = await fetch('runs.json'); if (!response.ok) throw Error('Could not load experiments'); runs = await response.json(); serverAvailable = false;
   }
   const list = $('run-list'); list.replaceChildren();
-  for (const run of runs.filter(r => !['research_loop_trial', 'model_tournament_trial'].includes(r.kind))) {
+  for (const run of runs.filter(r => !['research_loop_trial', 'model_tournament_trial', 'split_robustness_trial'].includes(r.kind))) {
     const row = document.createElement('tr'), id = document.createElement('td'), button = document.createElement('button');
     button.type = 'button'; button.className = 'link'; button.textContent = '#' + run.id; button.onclick = () => inspectRun(run.id); id.append(button); row.append(id);
     text(row, 'td', names[run.kind] || run.kind); text(row, 'td', describe(run)); list.append(row);
@@ -141,6 +143,17 @@ async function inspectRun(id) {
     if (!run) throw Error('Run not found');
     text(target, 'h3', 'Run #' + run.id + ' · ' + (names[run.kind] || run.kind));
     text(target, 'p', describe(run)); text(target, 'p', 'Expected: ' + run.expectation);
+    if (run.kind === 'split_robustness' && run.outputs?.overview) {
+      text(target, 'p', 'Post-submission check; the submitted model is unchanged.');
+      const scores = document.createElement('table');
+      const header = document.createElement('tr');
+      ['Model', 'Mean choice loss', 'Mean buy/skip loss'].forEach(label => text(header, 'th', label)); scores.append(header);
+      for (const [name, values] of Object.entries(run.outputs.overview)) {
+        const row = document.createElement('tr'); text(row, 'td', name.replaceAll('_', ' '));
+        text(row, 'td', values.log_loss.mean.toFixed(4), 'num'); text(row, 'td', values.buy_log_loss.mean.toFixed(4), 'num'); scores.append(row);
+      }
+      target.append(scores); text(target, 'p', run.outputs.limits, 'muted');
+    }
     if (run.kind === 'model_tournament' && run.outputs?.metrics) {
       text(target, 'p', 'Best observed family: ' + run.outputs.best_observed_family + '. The submission model is unchanged.');
       text(target, 'p', run.outputs.limits, 'muted');
