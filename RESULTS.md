@@ -44,4 +44,6 @@ I would run one randomized online US shopper study comparing $3.49 versus $4.49 
 
 Get real costs first, then use a pilot to set the sample size and a worthwhile contribution-profit difference before the main study. Change the price if the discount does not pay for itself, or the message if cleaning performs better. Weak repeat purchase would also make me doubt the candidate. Online is a convenient test venue; superiority over retail remains untested.
 
-One last comparison after preparing the submission: in run 41 I tried 17 model settings, including random forest and boosted trees, but the inner search chose the current-only utility model in all 5 outer folds (log loss 1.5694); this supports keeping it among the models I tried, although the reused data does not prove it is the best possible model.
+## One more thing I tried
+
+After I was ready to submit, I had a new idea. Why can't we just have a model tournament where we can try to find the best model? I did this, and I still found that our own model, which is a simple model, worked the best among the models I tried.
