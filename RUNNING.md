@@ -31,7 +31,7 @@ python3 -m venv .venv
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-This appends new runs. It does not overwrite runs 1–4 or pretend the already-inspected check set is fresh. The original failed run cannot be resumed. Its traceback remains available by ID. Hyperparameters and random seeds are fixed; do not interpret replication as independent evidence.
+This appends new runs. It does not overwrite runs 1–5 or pretend the already-inspected check set is fresh. The original failed run cannot be resumed. Its traceback remains available by ID. Hyperparameters and random seeds are fixed; do not interpret replication as independent evidence.
 
 `python3 experiments.py --show 2` prints a full saved run when training dependencies are installed. `python3 build_demo.py` refreshes downloadable artifacts while keeping demo weights tied to frozen run 3. `python3 scenario_test.py` registers and repeats the exploratory scenario comparison. It appends another run and leaves originals unchanged.
 
@@ -47,3 +47,5 @@ This appends new runs. It does not overwrite runs 1–4 or pretend the already-i
 - `baseline.py`, `run_baseline.py`, `data/`: original starter code/data, unchanged.
 
 AI assistance was used for implementation, checks and drafting the technical report. FIRST.md records the candidate's initial hypothesis. The candidate should review and be able to explain the code, saved runs and conclusions before submitting.
+
+Follow-up shrinkage experiment: `python3 regularization_test.py` appends a nested household-CV run using build data only. It does not re-evaluate the check set.

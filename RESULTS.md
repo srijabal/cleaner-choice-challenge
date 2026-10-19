@@ -1,6 +1,6 @@
 # What happened
 
-The first hypothesis was not supported: adding simple purchase history did not improve out-of-household predictions. The starter's hand-written rules also beat both learned models on log loss. The learned model is a transparent exploratory tool, not a demonstrated improvement over the starter.
+The first experiment did not support the hypothesis: adding simple purchase history did not improve out-of-household predictions at the original regularization strength. The starter's hand-written rules also beat both learned models on log loss. The learned model is a transparent exploratory tool, not a demonstrated improvement over the starter.
 
 ## Approach
 
@@ -57,6 +57,22 @@ The candidate has 67 observed build visits from repeated households; that count 
 Propose **one online randomized 2×2 study** with real US shoppers: $3.49 vs $4.49, crossed with cleaning vs an independently substantiated environmental message. The provisional lead arm is $3.49/environment; online is chosen for a controllable test, not a proven channel advantage. Keep the formula, 16 fl oz bottle, competing offers and recruitment constant. Include no purchase and use actual purchase rather than stated intent. Follow participants for repeat purchase on a calendar schedule established through a pilot. Use truthful messages only; the supplied data do not validate any claim.
 
 Before recruitment, obtain unit economics, define a minimum worthwhile contribution-profit difference, use a pilot to estimate baseline purchase rates, then set sample size and analysis before collecting the main outcomes. Randomize by shopper and account for repeated observations. Do not stop when a favorable result appears. Report confidence intervals for purchase, repeat purchase and contribution per exposed shopper. Prefer $4.49 if extra purchases at $3.49 do not cover the discount; prefer cleaning if it yields better prespecified outcomes. If intervals remain too wide, report uncertainty. A channel comparison needs a later test and remains unresolved.
+
+## Follow-up: stronger regularization (run 5)
+
+After seeing the original results, the next hypothesis was that the learned models were fitting noise. This is explicitly an exploratory follow-up chosen after the check results, not a fresh confirmation. No check outcomes were evaluated again.
+
+For each of the same five outer household folds, three inner household folds selected C from 0.01, 0.1 and 1.0 using only the outer training households. Smaller C means a stronger penalty on large coefficients. Every outer fold selected C=0.01 for both feature sets. Outer validation outcomes were not used to choose C.
+
+| Model | Original build CV loss | Nested-CV tuned loss |
+| --- | ---: | ---: |
+| Current-only | 1.5909 | 1.5731 |
+| With history | 1.5952 | 1.5706 |
+| Starter (unchanged) | 1.5793 | 1.5793 |
+
+The tuned history model now has slightly lower loss than tuned current-only: difference -0.00246, descriptive household-bootstrap interval [-0.00537, +0.00033]. That interval still includes no improvement. Differences versus the starter also have intervals spanning zero. Stronger shrinkage improved the learned models relative to their original versions, but did not establish a reliable advantage over the starter or a reliable benefit from history. This is consistent with excessive flexibility being a problem; it does not prove the cause of the earlier errors.
+
+The demo remains tied to the frozen run 3 model; run 5 is available in the updated downloadable ledger. Do not silently swap a tuned model into a previously reported check result. A next possible experiment is an intercept-only frequency baseline, to test whether the benefit mostly comes from predictions moving toward average choice rates. It has not been run.
 
 ## Review guide
 

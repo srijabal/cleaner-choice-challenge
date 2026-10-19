@@ -5,6 +5,7 @@
 </style></head><body><main>
 <header><div class="eyebrow">CLEANER CHOICE / EXPERIMENT NOTEBOOK</div><h1>Does purchase history help?</h1><p>In this experiment, it did not. Adding history slightly worsened predictions on held-out households. This is a small decision-support prototype using fictional data, not a validated forecast of US shoppers.</p></header>
 <section><h2>What the check set showed</h2><div class="scroll"><table><thead><tr><th>Model</th><th>Log loss ↓</th><th>Buy/no-buy loss ↓</th><th>Accuracy</th></tr></thead><tbody id="metrics"></tbody></table></div><p class="muted">Run 3 · 50 unseen households, 300 visits. Current-only was selected over history using build cross-validation before this check. It did not outperform the starter. Accuracy alone would hide that weakness.</p></section>
+<p class="notice">Follow-up run 5: stronger regularization improved build-CV log loss to 1.5731 (current-only) and 1.5706 (history). The small history advantage remains uncertain. The check set was not evaluated again; this demo still uses the frozen run 3 model.</p>
 <section class="grid"><div><h2>Try a different offer</h2><form id="prediction-form">
 <label>Starting example<select id="example"><option value="new">New household</option></select></label>
 <p id="history-note" class="muted">New household: no purchase history.</p>

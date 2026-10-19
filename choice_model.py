@@ -51,10 +51,10 @@ def examples(filename):
     return result
 
 
-def fit(rows, use_history=False):
+def fit(rows, use_history=False, C=1.0):
     import sklearn
     from sklearn.linear_model import LogisticRegression
-    model = LogisticRegression(C=1.0, solver='lbfgs', max_iter=2000, random_state=42)
+    model = LogisticRegression(C=C, solver='lbfgs', max_iter=2000, random_state=42)
     model.fit([features(r['household'],r['visit'],r['history'],use_history) for r in rows],
               [r['visit']['choice'] for r in rows])
     if max(model.n_iter_) >= 2000:
@@ -62,7 +62,7 @@ def fit(rows, use_history=False):
     return {'type':'multinomial_logistic', 'version':'logistic-v1', 'history':use_history,
             'feature_names': CURRENT_FEATURES + (HISTORY_FEATURES if use_history else []),
             'classes':model.classes_.tolist(), 'coefficients':model.coef_.tolist(),
-            'intercepts':model.intercept_.tolist(), 'C':1.0, 'sklearn_version':sklearn.__version__,
+            'intercepts':model.intercept_.tolist(), 'C':C, 'sklearn_version':sklearn.__version__,
             'iterations':int(max(model.n_iter_))}
 
 
