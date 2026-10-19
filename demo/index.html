@@ -1,34 +1,50 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cleaner choice · experiment notebook</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cleaner choice</title>
 <style>
-:root{color-scheme:light;--ink:#202c27;--muted:#59675f;--line:#ced5ce;--paper:#f7f8f3;--accent:#245d44}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Georgia,serif}main{max-width:1100px;margin:auto;padding:36px 24px}header{border-bottom:2px solid var(--ink);padding-bottom:20px}h1{font-size:38px;line-height:1.1;margin:8px 0 16px}h2{font-size:24px;margin:0 0 16px}h3{font-size:18px}p{max-width:80ch}.eyebrow,small,label,button,select,input,textarea,table,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--accent)}.muted,small{color:var(--muted)}section{padding:28px 0;border-bottom:1px solid var(--line)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:12px}input,select,textarea{width:100%;padding:9px;border:1px solid #88998e;background:white;border-radius:3px;font-size:14px;color:var(--ink)}textarea{min-height:80px}button{border:0;padding:12px 18px;background:var(--accent);color:white;cursor:pointer;border-radius:3px;margin-top:12px}button:disabled{opacity:.5;cursor:wait}button.secondary{background:#e1e8df;color:var(--ink)}a{color:var(--accent);text-underline-offset:3px}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}th{font-weight:600}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf0e9;padding:16px;font:12px/1.5 ui-monospace,monospace;max-height:420px;overflow:auto}.notice{border-left:3px solid var(--accent);padding:4px 16px;background:#edf2e9}.bar{height:8px;background:var(--accent);margin-top:4px}.prob{display:flex;justify-content:space-between;margin-top:12px}.error{color:#9e291f}.scroll{overflow:auto}details{margin:16px 0}summary{cursor:pointer}footer{padding:24px 0;font-size:13px}*:focus-visible{outline:3px solid #ac710f;outline-offset:3px}@media(max-width:720px){main{padding:24px 16px}.grid{grid-template-columns:1fr;gap:24px}h1{font-size:31px}.fields{gap:10px}}
-</style></head><body><main>
-<header><div class="eyebrow">CLEANER CHOICE / EXPERIMENT NOTEBOOK</div><h1>Does purchase history help?</h1><p>In this experiment, it did not. Adding history slightly worsened predictions on held-out households. This is a small decision-support prototype using fictional data, not a validated forecast of US shoppers.</p></header>
-<section><h2>What the check set showed</h2><div class="scroll"><table><thead><tr><th>Model</th><th>Log loss ↓</th><th>Buy/no-buy loss ↓</th><th>Accuracy</th></tr></thead><tbody id="metrics"></tbody></table></div><p class="muted">Run 3 · 50 unseen households, 300 visits. Current-only was selected over history using build cross-validation before this check. It did not outperform the starter. Accuracy alone would hide that weakness.</p></section>
-<p class="notice">Follow-up run 5: stronger regularization improved build-CV log loss to 1.5731 (current-only) and 1.5706 (history). The small history advantage remains uncertain. The check set was not evaluated again; this demo still uses the frozen run 3 model.</p>
-<section class="grid"><div><h2>Try a different offer</h2><form id="prediction-form">
-<label>Starting example<select id="example"><option value="new">New household</option></select></label>
-<p id="history-note" class="muted">New household: no purchase history.</p>
+:root{color-scheme:light;font-family:"Helvetica Neue",Helvetica,sans-serif;color:#202020;background:#fff;font-size:15px;line-height:1.5;--muted:#606060;--line:#ddd;--link:#174eb3}*{box-sizing:border-box}body{margin:0}main{max-width:820px;margin:auto;padding:32px 24px 60px}h1{font-size:23px;margin:0;font-weight:600}h2{font-size:20px;line-height:1.3;margin:0 0 16px}h3{font-size:16px;margin:24px 0 10px}p{margin:10px 0;max-width:70ch}header{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line)}header span{font-size:13px;color:var(--muted)}nav{display:flex;gap:24px;margin:24px 0 32px;border-bottom:1px solid var(--line)}nav button{background:none;color:var(--muted);border:0;border-radius:0;padding:0 0 10px;font:inherit;cursor:pointer}nav button[aria-selected=true]{color:#202020;border-bottom:2px solid #202020;font-weight:600}button{font:inherit;background:#202020;color:#fff;border:1px solid #202020;border-radius:4px;padding:9px 15px;cursor:pointer}button:hover{background:#3d3d3d;color:#fff}nav button:hover{background:none;color:#202020}button.link:hover{background:none;color:#103778}button:disabled{opacity:.5;cursor:wait}button.link{border:0;background:none;color:var(--link);padding:0;text-decoration:underline;text-underline-offset:3px;text-align:left}a{color:var(--link);text-underline-offset:3px}.muted,small{color:var(--muted)}small{font-size:13px}.offer-line{font-size:24px;font-weight:600;margin:12px 0}.rule{border:0;border-top:1px solid var(--line);margin:28px 0}.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.two{grid-template-columns:1fr 1fr}label{display:block;font-size:13px;color:#404040}input,select,textarea{display:block;width:100%;margin-top:6px;border:1px solid #aaa;background:#fff;color:#202020;border-radius:4px;padding:9px;font:inherit}textarea{min-height:64px;resize:vertical}form>label{margin:20px 0 12px}details{margin:22px 0}summary{cursor:pointer;color:#404040}details>div{padding-top:14px}table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:10px 8px 10px 0;border-bottom:1px solid #eee;vertical-align:top}th{font-size:12px;font-weight:500;color:var(--muted)}td.num,th.num{text-align:right;padding-right:0}.result-space{margin-top:28px}.result-line{font-size:20px;margin-bottom:8px}.download-row{display:flex;flex-wrap:wrap;gap:20px;margin:24px 0;font-size:13px}.lookup{display:flex;gap:8px;align-items:end;max-width:330px}.lookup label{flex:1}.lookup button{white-space:nowrap}pre{font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f5f5;padding:12px;max-height:360px;overflow:auto}code{font-family:ui-monospace,monospace;font-size:12px}.error{color:#a12020}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:36px;padding-top:16px}[hidden]{display:none!important}*:focus-visible{outline:2px solid var(--link);outline-offset:3px}::selection{background:#dfe9ff}input,textarea{caret-color:var(--link)}@media(max-width:600px){main{padding:22px 18px 40px}header{align-items:start;gap:12px}header span{max-width:110px;text-align:right}.fields{grid-template-columns:1fr}.two{grid-template-columns:1fr 1fr}nav{gap:22px}table{font-size:13px}.offer-line{font-size:22px}}
+</style>
+</head>
+<body><main>
+<header><h1>Cleaner choice</h1></header>
+<nav role="tablist" aria-label="Views">
+<button id="tab-runs" role="tab" aria-controls="panel-runs" aria-selected="true" data-view="runs">Experiments</button>
+<button id="tab-offer" role="tab" aria-controls="panel-offer" aria-selected="false" data-view="offer">New experiment</button>
+</nav>
+<section id="panel-offer" role="tabpanel" aria-labelledby="tab-offer" hidden>
+<label>Experiment type<select id="experiment-type"><option value="offer">Offer prediction</option><option value="research">CPU research loop</option></select></label>
+<div id="offer-controls" style="margin-top:24px">
+<form id="offer-form">
 <div class="fields">
-<label>Entrant price ($)<input id="price" type="number" min="3.49" max="5.49" step="0.01" value="4.49" required></label>
-<label>Message<select id="message"><option value="cleaning">Cleaning</option><option value="low_odor">Low odor</option><option value="environment">Environment</option><option value="">Missing message</option></select></label>
-<label>Channel<select id="channel"><option value="retail">Retail</option><option value="online">Online</option></select></label>
-<label>Budget pressure<select id="budget"><option value="middle">Middle</option><option value="tight">Tight</option><option value="flexible">Flexible</option></select></label>
-<label>Usual brand<select id="usual"><option value="standard">Standard</option><option value="budget">Budget</option><option value="scented">Scented</option><option value="">Missing</option></select></label>
-<label>Income band<select id="income"><option value="50k_to_100k">$50k–$100k</option><option value="under_50k">Under $50k</option><option value="over_100k">Over $100k</option></select></label>
-<label>Bathrooms<input id="bathrooms" type="number" min="1" max="3" step="1" value="1" required></label>
-<label>Monthly cleaning spend ($)<input id="spend" type="number" min="0" max="100" step="1" value="20" placeholder="Blank = missing"></label>
+<label>Price ($)<input id="price" type="number" min="3.49" max="5.49" step="0.01" value="3.49" required></label>
+<label>Shelf message<select id="message"><option value="environment">Environment</option><option value="cleaning">Cleaning</option><option value="low_odor">Low odor</option><option value="">No message recorded</option></select></label>
+<label>Channel<select id="channel"><option value="online">Online</option><option value="retail">Retail</option></select></label>
 </div>
-<label style="margin-top:12px">Model<select id="model"><option value="current_only">Current-only · selected exploratory model</option><option value="with_history">With history · hypothesis not supported</option></select></label>
-<p class="muted">Competitors are fixed at $3.99 standard, $2.99 budget, and $4.29 scented. Only $3.49, $4.49 and $5.49 entrant prices were observed; other allowed values interpolate.</p>
-<label>Your expectation, before running<textarea id="expectation" required placeholder="For example: lowering price will increase entrant probability."></textarea></label>
-<button id="run-button" type="submit" disabled>Save expectation & predict</button>
-<p id="status" role="status">Loading saved model…</p>
-</form></div><div><h2>Model result</h2><div id="result" aria-live="polite"><p class="muted">Change inputs, write your expectation, then run. Predictions are computed in your browser from saved fitted weights.</p></div></div></section>
-<section><h2>Inspect the evidence</h2><p>Original experiments are saved in SQLite, including the failed first run. Interactive predictions are recorded in this browser’s IndexedDB before calculation. Export them before switching devices or clearing browser storage.</p>
-<div class="fields"><label>Saved experiment<select id="saved-run"></select></label><label>Your browser runs<select id="local-run"><option value="">Select a run</option></select></label></div>
-<pre id="run-detail">Choose a saved run.</pre>
-<p><a href="runs.sqlite" download>Download experiment database</a> · <a href="runs.json" download>Download full run JSON</a> · <a href="model.json" download>Download model & version metadata</a></p><button type="button" id="export-local" class="secondary">Export browser runs</button></section>
-<section><h2>What to test next</h2><p class="notice"><strong>I do not know the best launch combination yet.</strong> Run 4’s models mostly rank $3.49 / environment / online highest for purchase probability, but one training fold prefers cleaning. These are associations, and there are no margin data.</p><p>A bounded next test: one randomized online study with real US shoppers, comparing $3.49 vs $4.49 and cleaning vs an independently substantiated environmental message. Keep the formula, bottle, competing offers and audience constant; include “buy none.” Measure actual purchase and follow up for repeat purchase. Online is a practical test venue, not a proven superior channel.</p><p class="muted">Predefine the minimum worthwhile profit improvement after costs and power the study for it. Change the choice if the price discount fails to pay for itself, cleaning outperforms the environmental message, or first purchases do not translate into repeat purchases. A retail/channel comparison remains untested.</p></section>
-<footer>Fictional households and unverified product claims. Model score contributions explain the calculation; they do not establish a shopper’s motivation. No API, GPU, or external model service is used.</footer>
+<details><summary>Household and cost assumptions</summary><div class="fields two">
+<label>Budget pressure<select id="budget"><option value="middle">Middle</option><option value="tight">Tight</option><option value="flexible">Flexible</option></select></label>
+<label>Usual cleaner<select id="usual"><option value="standard">Standard</option><option value="budget">Budget</option><option value="scented">Scented</option><option value="">Unknown</option></select></label>
+<label>Assumed unit cost ($)<input id="cost" type="number" min="0" max="10" step="0.01" value="1" required></label>
+<p><small>Competitor prices: standard $3.99, budget $2.99, scented $4.29.</small></p>
+</div></details>
+<label>Expected result<textarea id="expectation" required maxlength="1000" ></textarea></label>
+<button id="predict-button" type="submit" disabled>Run experiment</button>
+<p id="offer-status" role="status" class="muted">Loading…</p>
+</form>
+<div id="offer-result" class="result-space" aria-live="polite" hidden></div>
+</div>
+<div id="research-controls" style="margin-top:24px" hidden>
+<form id="research-form"><label>Expected result<textarea id="research-expectation" required minlength="5" maxlength="1000"></textarea></label><button id="research-button" type="submit" disabled>Run research loop</button></form>
+<p id="research-status" role="status" class="muted">Loading…</p>
+<small>3 settings per fold · Stops after 2 rejected changes</small>
+</div>
+</section>
+<section id="panel-runs" role="tabpanel" aria-labelledby="tab-runs">
+<table><thead><tr><th>Run</th><th>Question</th><th>Result</th></tr></thead><tbody id="run-list"></tbody></table>
+<details><summary>Find a run by ID</summary><div><form id="lookup-form" class="lookup"><label>Run ID<input id="lookup-id" type="number" min="1" step="1" required></label><button type="submit">Open run</button></form></div></details>
+<div id="run-detail" class="result-space" hidden aria-live="polite"></div>
+<div class="download-row"><a id="database-download" href="runs.sqlite" download>Download run database</a><a href="model.json" download>Download model</a><button class="link" id="export-browser" type="button">Export my offer runs</button></div>
+</section>
+
 </main><script src="model.js"></script><script src="app.js"></script></body></html>

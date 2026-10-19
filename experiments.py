@@ -7,6 +7,7 @@ import random
 import sqlite3
 import traceback
 from collections import defaultdict
+from contextlib import contextmanager
 from pathlib import Path
 import numpy as np
 from choice_model import examples, fit, score_rows, metrics
@@ -21,11 +22,16 @@ def versions():
     return {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((ROOT/'data').glob('*.csv'))}
 def source_version():
     return {p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in ['choice_model.py','experiments.py','baseline.py']}
+@contextmanager
 def connection():
     DB.parent.mkdir(exist_ok=True)
     c=sqlite3.connect(DB); c.row_factory=sqlite3.Row
     c.execute('CREATE TABLE IF NOT EXISTS runs (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL, finished_at TEXT, status TEXT NOT NULL, kind TEXT NOT NULL, expectation TEXT NOT NULL, inputs TEXT NOT NULL, outputs TEXT, model_version TEXT NOT NULL, data_version TEXT NOT NULL)')
-    return c
+    try:
+        with c:
+            yield c
+    finally:
+        c.close()
 
 def register(kind, expectation, inputs):
     with connection() as c:

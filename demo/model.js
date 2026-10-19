@@ -1,36 +1,40 @@
 (function(root){
 'use strict';
-const products=['entrant','standard','budget','scented'];
-const choices=['budget','entrant','none','scented','standard'];
-function features(h,v,history,useHistory){
-  const f={};
-  for(const p of products) f['price:'+p]=Number(v[p+'_price'])-4;
-  for(const m of ['cleaning','low_odor','environment','missing']) f['message:'+m]=Number((v.entrant_message||'missing')===m);
-  f['channel:online']=Number(v.channel==='online');
-  for(const p of [...products,'missing']) f['usual:'+p]=Number((h.usual_brand||'missing')===p);
-  for(const b of ['tight','flexible']) f['budget:'+b]=Number(h.budget===b);
-  for(const b of ['under_50k','over_100k']) f['income:'+b]=Number(h.income_band===b);
-  f.bathrooms=Number(h.bathrooms)-1;f.monthly_spend=Number(h.cleaning_spend_usd||0)/20;
-  f['monthly_spend:missing']=Number(h.cleaning_spend_usd==='');
-  if(useHistory){
-    f['history:available']=Number(history.length>0);
-    for(const p of choices) f['previous:'+p]=Number(history.length>0&&history[history.length-1].choice===p);
-    f['history:ever_entrant']=Number(history.some(r=>r.choice==='entrant'));
-    let gap=0;for(let i=history.length-1;i>=0;i--){if(history[i].choice!=='none')break;gap++;}
-    f['history:visits_since_purchase']=gap/6;
-  }return f;
+function utilityRows(model,h,v,history){
+  return model.classes.map(choice=>{
+    const f=Object.fromEntries(model.feature_names.map(n=>[n,0]));
+    if(choice!=='none'){
+      const price=Number(v[choice+'_price']);
+      if(!Number.isFinite(price)||price<=0)throw Error('Prices must be positive finite numbers.');
+      f['product:'+choice]=1;f.price_penalty=-price;
+      f.tight_budget_price_penalty=h.budget==='tight'?-price:0;
+      f.usual_brand=Number(h.usual_brand===choice);
+    }
+    if(choice==='entrant'){
+      for(const message of ['cleaning','low_odor','environment'])f['entrant_message:'+message]=Number(v.entrant_message===message);
+      f['entrant_channel:online']=Number(v.channel==='online');
+    }
+    if(model.history&&history.length){
+      const last=history[history.length-1].choice;
+      f['history:repeat_product']=Number(choice!=='none'&&choice===last);
+      f['history:purchase_before_none']=Number(choice==='none'&&last!=='none');
+    }
+    return model.feature_names.map(n=>f[n]);
+  });
+}
+function utilityPredict(model,h,v,history){
+  const matrix=utilityRows(model,h,v,history);
+  const scores=matrix.map(x=>x.reduce((s,v,j)=>s+v*model.weights[j],0));
+  const peak=Math.max(...scores),weights=scores.map(s=>Math.exp(s-peak)),total=weights.reduce((a,b)=>a+b,0);
+  const probabilities=Object.fromEntries(model.classes.map((p,i)=>[p,weights[i]/total]));
+  const [top,runner]=scores.map((_,i)=>i).sort((a,b)=>scores[b]-scores[a]);
+  const contributions=model.feature_names.map((feature,j)=>({feature,value:matrix[top][j]-matrix[runner][j],coefficient:model.weights[j],contribution:(matrix[top][j]-matrix[runner][j])*model.weights[j]})).filter(t=>t.value!==0).sort((a,b)=>Math.abs(b.contribution)-Math.abs(a.contribution));
+  return {probabilities,top_choice:model.classes[top],runner_up:model.classes[runner],log_odds_margin:scores[top]-scores[runner],contributions};
 }
 function predict(model,h,v,history=[]){
-  const f=features(h,v,history,model.history),x=model.feature_names.map(n=>f[n]);
-  if(x.some(n=>!Number.isFinite(n)))throw Error('Inputs must contain finite numbers.');
-  const scores=model.coefficients.map((ws,i)=>model.intercepts[i]+ws.reduce((s,w,j)=>s+w*x[j],0));
-  const peak=Math.max(...scores),weights=scores.map(s=>Math.exp(s-peak)),total=weights.reduce((a,b)=>a+b,0);
-  const probs=Object.fromEntries(model.classes.map((p,i)=>[p,weights[i]/total]));
-  const [top,runner]=scores.map((_,i)=>i).sort((a,b)=>scores[b]-scores[a]);
-  const terms=[{feature:'intercept',value:1,contribution:model.intercepts[top]-model.intercepts[runner]}];
-  model.feature_names.forEach((n,j)=>{if(x[j]!==0)terms.push({feature:n,value:x[j],contribution:(model.coefficients[top][j]-model.coefficients[runner][j])*x[j]});});
-  return {probabilities:probs,top_choice:model.classes[top],runner_up:model.classes[runner],log_odds_margin:scores[top]-scores[runner],contributions:terms.sort((a,b)=>Math.abs(b.contribution)-Math.abs(a.contribution))};
+  if(model.type!=='shared_utility')throw Error('Unsupported model type.');
+  return utilityPredict(model,h,v,history);
 }
-root.ChoiceModel={features,predict};
+root.ChoiceModel={predict};
 if(typeof module!=='undefined')module.exports=root.ChoiceModel;
 })(typeof globalThis!=='undefined'?globalThis:this);

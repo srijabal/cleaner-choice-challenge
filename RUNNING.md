@@ -1,51 +1,71 @@
-# Run and inspect
+# Running the work
 
-## Local demo — one command
+The simplest command is:
+
+```sh
+./run.sh
+```
+
+It creates a local virtual environment, installs the CPU dependencies and starts http://127.0.0.1:8000. No external model API or GPU is used. The first install needs access to the Python package registry.
+
+For just viewing saved experiments and running offer predictions, this also works with only Python 3.10 or later:
 
 ```sh
 python3 app.py
 ```
 
-Open http://127.0.0.1:8000. Python 3.10+; no pip install needed for the demo. It serves the pre-exported fitted weights and recomputes predictions in JavaScript when inputs change. An expectation is saved to browser IndexedDB before prediction. Browser runs can be exported as JSON; they are local to that browser and separate from the research SQLite ledger.
+The CPU research option needs NumPy, SciPy and scikit-learn. Those are installed by `run.sh`. The browser calculates offer probabilities from the saved final weights, so opening the page does not retrain anything.
 
-The GitHub repository and hosted demo are private. Reviewers need explicit access or an authorized visibility change before submission. No email or submission has been sent.
+## The page
 
-## Saved experiments
+There are only two views. Experiments shows previous runs. New experiment lets you choose an offer prediction or the CPU research loop.
 
-`artifacts/runs.sqlite` is the authoritative experiment database. `demo/runs.sqlite` is a consistent download copy. `demo/runs.json` is a full export, including failed runs, expectations, inputs, timestamps, file hashes, trained coefficients and per-visit predictions. Select a run ID in the demo; large prediction/weight arrays are omitted from the on-screen view but included in downloads.
+Offer runs are saved in this browser's IndexedDB before calculation, with the expectation, inputs, outputs and versions. Use Export my offer runs to keep a copy. These browser runs are not part of the research SQLite file and will not follow you to another device.
 
-Inspect without dependencies:
+Model experiments are stored in `artifacts/runs.sqlite`. The local server lets you inspect them by ID and download a consistent database copy. `demo/runs.sqlite` and `demo/runs.json` are exported copies for a static version of the page. A static host can run the offer calculator, but it cannot run Python research; that option is only enabled when the local API is available.
+
+## Commands I used
+
+After installing the dependencies, these commands run the corresponding investigations:
 
 ```sh
-python3 -c "import sqlite3; c=sqlite3.connect('artifacts/runs.sqlite'); print(c.execute('SELECT id,kind,status FROM runs').fetchall())"
+.venv/bin/python experiments.py --show 2
+.venv/bin/python regularization_test.py
+.venv/bin/python frequency_baseline.py
+.venv/bin/python structured_experiment.py
+.venv/bin/python decision_experiment.py
+.venv/bin/python research_loop.py
 ```
 
-Source snapshots matching every recorded model/source hash are in `artifacts/sources/`. The failed run 1 source was reconstructed from the one-line missing-value fix and verified against its already-recorded SHA-256; it is not presented as a contemporaneously saved snapshot.
+The first command reads run 2. The others append new saved experiments. They keep the originals. The research loop never loads check outcomes. It tries at most three settings per outer fold and stops after two changes fail to help enough. It does not automatically overwrite the final model.
 
-## Reproduce training
+`reproduce.py` repeats the original build and check comparisons. Its check results are reproduction of already-seen data, not a fresh test. It appends new runs. I would not use repeated check results to claim further validation.
+
+To update the exported evidence without fitting a model:
 
 ```sh
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python reproduce.py
+.venv/bin/python build_demo.py
+```
+
+The demo stays tied to the final prototype saved in run 8. Updating the exports does not silently replace that model with a new research candidate.
+
+## Checks
+
+```sh
 .venv/bin/python -m unittest discover -s tests -v
+node tests/test_browser_model.js
 ```
 
-This appends new runs. It does not overwrite runs 1–5 or pretend the already-inspected check set is fresh. The original failed run cannot be resumed. Its traceback remains available by ID. Hyperparameters and random seeds are fixed; do not interpret replication as independent evidence.
+Node is only needed for the Python/browser parity check. It is not needed to run the Python server or open the demo.
 
-`python3 experiments.py --show 2` prints a full saved run when training dependencies are installed. `python3 build_demo.py` refreshes downloadable artifacts while keeping demo weights tied to frozen run 3. `python3 scenario_test.py` registers and repeats the exploratory scenario comparison. It appends another run and leaves originals unchanged.
+Source files matching the recorded model hashes are saved in `artifacts/sources/`. The failed run 1 source was reconstructed from the missing-value fix and checked against its previously recorded hash. I have kept that detail explicit instead of calling it an original saved snapshot.
 
-## Files
+`artifacts/environment.json` records the environment used to prepare the work. A different library version may give slightly different refits; the saved weights and predictions remain inspectable.
 
-- `FIRST.md`: initial concern committed before model changes.
-- `choice_model.py`: fixed features, logistic fit, portable prediction and score contributions.
-- `experiments.py`: SQLite ledger, household CV, check evaluation, metrics and bootstrap.
-- `scenario_test.py`: exploratory price/message/channel sensitivity.
-- `RESULTS.md`: decisions, negative results, limits, household examples and proposed real test.
-- `FINAL_DRAFT.md`: under-200-word submission note for review/adaptation.
-- `demo/`: static interface, inference code and exported evidence.
-- `baseline.py`, `run_baseline.py`, `data/`: original starter code/data, unchanged.
+To recreate the submission ZIP, database copy, score exports and checksums without making a commit:
 
-AI assistance was used for implementation, checks and drafting the technical report. FIRST.md records the candidate's initial hypothesis. The candidate should review and be able to explain the code, saved runs and conclusions before submitting.
+```sh
+.venv/bin/python prepare_submission.py
+```
 
-Follow-up shrinkage experiment: `python3 regularization_test.py` appends a nested household-CV run using build data only. It does not re-evaluate the check set.
+The outputs go in `submission/`, which is ignored by Git. This does not send the submission or publish a live link.

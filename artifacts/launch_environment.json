@@ -1,0 +1,11 @@
+{
+  "python": "3.14.7",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "scikit_learn": "1.9.1",
+  "checks": {
+    "python_tests_passed": 23,
+    "launch_command": "./run.sh --port 8001",
+    "saved_run_api_verified": true
+  }
+}

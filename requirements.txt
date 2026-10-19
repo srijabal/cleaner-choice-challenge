@@ -1,3 +1,4 @@
 # Training and experiment reproduction only. The demo uses the Python standard library.
 numpy>=1.26,<3
 scikit-learn>=1.4,<2
+scipy>=1.10,<2

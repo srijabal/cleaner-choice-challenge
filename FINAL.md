@@ -1,0 +1,5 @@
+After run 2 I could not show that purchase history helped, even for buying versus skipping. Stronger regularization improved the learned models. Run 7 then gave a smaller model with 11 learned values and build-validation loss of 1.5694. Its small advantage over the earlier tuned model is uncertain. In run 9, the bounded research loop stopped without finding enough improvement and kept the existing model.
+
+For now I would test $3.49, an environmental message, online. All five utility fold fits preferred it for purchase share. But I do not know the best launch offer yet. Actual costs are missing, assumed costs change the preferred price, and the predictions are not causal effects.
+
+My next step would be one randomized online shopper study comparing $3.49 versus $4.49 and cleaning versus a supported environmental message. Get real costs and set the sample size and a worthwhile profit difference first. Include buying nothing and follow repeat purchases. I would change the price if the discount does not pay for itself, or the message if cleaning works better. The final model still needs fresh validation.

@@ -1,0 +1,47 @@
+{
+  "candidate": {
+    "price": 3.49,
+    "message": "environment",
+    "channel": "online",
+    "predicted_share": 0.3492516656197978,
+    "fold_share_range": [
+      0.30741097070774104,
+      0.3715360807357826
+    ],
+    "support_visits": 67,
+    "support_households": 57
+  },
+  "candidate_status": "stable_within_selected_family",
+  "fold_winner_agreement": 5,
+  "hypothetical_profit_winners": {
+    "0": {
+      "price": 3.49,
+      "message": "environment",
+      "channel": "online"
+    },
+    "1": {
+      "price": 4.49,
+      "message": "environment",
+      "channel": "online"
+    },
+    "2": {
+      "price": 5.49,
+      "message": "environment",
+      "channel": "online"
+    },
+    "3": {
+      "price": 5.49,
+      "message": "environment",
+      "channel": "online"
+    }
+  },
+  "decision": "A provisional shopper-test candidate, not an identified launch optimum. Obtain unit economics and substantiated wording before finalizing the test.",
+  "limits": [
+    "Fold ranges measure training-fit sensitivity, not 95% confidence intervals.",
+    "All scenario estimates are observational model predictions, not causal treatment effects.",
+    "Online has no acquisition or fulfillment cost here; its profit superiority is not established.",
+    "Costs 0, 1, 2, 3 are illustrative assumptions, not real unit costs.",
+    "Current survey and offer information are used; history was not selected.",
+    "Late-stage model development reused build data after the initial check was seen."
+  ]
+}

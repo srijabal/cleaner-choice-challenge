@@ -67,6 +67,9 @@ def fit(rows, use_history=False, C=1.0):
 
 
 def predict(model, household, visit, history):
+    if model.get('type') == 'shared_utility':
+        from structured_model import predict as utility_predict
+        return utility_predict(model, household, visit, history)
     x = features(household, visit, history, model['history'])
     scores = [b + sum(w*v for w,v in zip(ws,x)) for b,ws in zip(model['intercepts'], model['coefficients'])]
     weights = [math.exp(s-max(scores)) for s in scores]
