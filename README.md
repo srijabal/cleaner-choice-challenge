@@ -1,5 +1,15 @@
 # Cleaner choice challenge
 
+## Work in this repository
+
+Run the demo with `python3 app.py`, then open http://127.0.0.1:8000.
+
+Read [RESULTS.md](RESULTS.md) for the experiment and its negative result, [RUNNING.md](RUNNING.md) for reproduction and saved runs, and [FINAL_DRAFT.md](FINAL_DRAFT.md) for the submission-note draft. The original [FIRST.md](FIRST.md) was committed before model changes. The experiment database is [artifacts/runs.sqlite](artifacts/runs.sqlite).
+
+The original assignment follows below.
+
+---
+
 A fictional US brand wants to sell a new toilet cleaner. The bottle holds 16 fl oz. Its formula stays the same. The brand can change its price and main shelf message. Each cleaner makes different claims. The data do not prove those claims.
 
 The public data show six visits for each of 250 fictional households. A household could buy one cleaner or buy none. Some households gave short answers after a choice or after using a cleaner. Their answers can be incomplete or wrong. The starter model gives a chance for each choice and a short reason. The data cannot prove why a household chose an item. They cannot show how real shoppers will act.
